@@ -1,6 +1,6 @@
 ---
 - name: "Update sp-agent"
-  hosts: rpc
+  hosts: localhost
   become: true
   roles:
     - role: sp-agent
