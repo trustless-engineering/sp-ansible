@@ -1,0 +1,16 @@
+---
+# tasks file for sp-agent
+- name: Check If Docker Is Installed
+  command: docker --version
+  register: docker_valid
+  ignore_errors: yes
+
+- name: Install Docker
+  include_tasks: docker.yml
+  when: docker_valid.rc != 0
+
+- name: Add systemd unit from template
+  template:
+    src: docker.sp-agent.service.j2
+    dest: /etc/systemd/system/sp-agent.service
+  notify: Restart sp-agent

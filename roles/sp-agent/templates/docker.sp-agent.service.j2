@@ -1,0 +1,19 @@
+[Unit]
+Description=sp-agent
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker exec %n stop
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull ghcr.io/trustless-engineering/sp-agent:{{ sp_agent_version }}
+ExecStart=/usr/bin/docker run --rm --name %n \
+    -v /mnt:/mnt \
+    -v /var/log/cloud-init.log:/var/log/cloud-init.log \
+    -p 8910:8910 \
+    ghcr.io/trustless-engineering/sp-agent:{{ sp_agent_version }}
+
+[Install]
+WantedBy=default.target

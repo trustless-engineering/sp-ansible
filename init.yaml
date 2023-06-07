@@ -1,0 +1,9 @@
+---
+- name: "Setup RPC"
+  hosts: rpc
+  become: true
+  roles:
+    - role: node-exporter
+    - role: sp-agent
+    - role: autoclock-rpc
+    
